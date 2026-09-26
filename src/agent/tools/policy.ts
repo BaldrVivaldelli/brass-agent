@@ -1,5 +1,5 @@
-import { asyncFail, asyncFlatMap, asyncSucceed, asyncSync, type Async } from "../../core/types/asyncEffect";
-import type { Scope } from "../../core/runtime/scope";
+import { asyncFail, asyncFlatMap, asyncSucceed, asyncSync, type Async } from "brass-runtime";
+import type { Scope } from "brass-runtime";
 import type {
     AgentAction,
     AgentEnv,

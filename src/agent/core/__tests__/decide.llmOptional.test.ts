@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import * as fc from "fast-check";
 import { decideNextAction } from "../decide";
 import type { AgentAction, AgentError, AgentGoal, AgentMode, AgentState, Observation } from "../types";
-import type { Async } from "../../../core/types/asyncEffect";
+import type { Async } from "brass-runtime";
 
 /**
  * Property-based tests for patch flow without LLM.

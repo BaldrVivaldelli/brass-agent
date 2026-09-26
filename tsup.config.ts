@@ -1,20 +1,4 @@
 import { defineConfig } from "tsup";
-import type { Plugin } from "esbuild";
-import path from "node:path";
-
-const runtimeRoot = path.resolve("src/core");
-const runtimeExternal: Plugin = {
-  name: "agent-runtime-peer",
-  setup(build) {
-    build.onResolve({ filter: /^\.{1,2}\// }, (args) => {
-      const resolved = path.resolve(args.resolveDir, args.path);
-      if (resolved === runtimeRoot || resolved.startsWith(`${runtimeRoot}${path.sep}`)) {
-        return { path: "brass-runtime/core", external: true };
-      }
-      return undefined;
-    });
-  },
-};
 
 const common = {
   entry: {
@@ -25,8 +9,9 @@ const common = {
   target: "node18" as const,
   splitting: false,
   sourcemap: false,
-  outDir: "packages/agent/dist",
-  esbuildPlugins: [runtimeExternal],
+  outDir: "dist",
+  // `brass-runtime` is a peer: it must never be bundled in.
+  external: ["brass-runtime"],
 };
 
 export default defineConfig([
@@ -43,16 +28,15 @@ export default defineConfig([
     outExtension: () => ({ js: ".mjs" }),
   },
   {
-    entry: {
-      index: "src/agent/index.ts",
-    },
+    entry: { index: "src/agent/index.ts" },
     platform: "node",
     target: "node18",
     format: ["esm"],
     splitting: false,
     sourcemap: false,
-    outDir: "packages/agent/dist",
+    outDir: "dist",
     clean: false,
+    external: ["brass-runtime"],
     dts: { only: true },
     outExtension: () => ({ dts: ".d.ts" }),
   },

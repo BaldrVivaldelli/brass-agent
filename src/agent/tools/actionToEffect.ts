@@ -1,4 +1,4 @@
-import { asyncFail, asyncFlatMap, asyncMap, asyncSucceed, type Async } from "../../core/types/asyncEffect";
+import { asyncFail, asyncFlatMap, asyncMap, asyncSucceed, type Async } from "brass-runtime";
 import type { AgentAction, AgentEnv, AgentError, AgentState, Observation } from "../core/types";
 import { service } from "./env";
 import { resolveWorkspacePath } from "./path";

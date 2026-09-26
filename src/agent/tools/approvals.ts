@@ -1,4 +1,4 @@
-import { asyncSucceed } from "../../core/types/asyncEffect";
+import { asyncSucceed } from "brass-runtime";
 import type { AgentPersistence, ApprovalService } from "../core/types";
 import { approveApprovalRequest } from "../core/approvalCapability";
 import type { LearningConfig } from "../core/approvalLearning/types";

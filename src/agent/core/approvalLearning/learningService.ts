@@ -1,6 +1,6 @@
 // src/agent/core/approvalLearning/learningService.ts
 
-import type { Async } from "../../../core/types/asyncEffect";
+import type { Async } from "brass-runtime";
 import type {
   AgentEnv,
   AgentError,

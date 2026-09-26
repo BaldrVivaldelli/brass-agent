@@ -1,4 +1,4 @@
-import type { Async } from "../../core/types/asyncEffect";
+import type { Async } from "brass-runtime";
 import type { BanditState } from "./contextBudget/types";
 import type { HostProfile } from "./hostProfile";
 import type { BudgetConfigInput, BudgetEvent, ModelTier, TokenUsage } from "./llmBudget/types";

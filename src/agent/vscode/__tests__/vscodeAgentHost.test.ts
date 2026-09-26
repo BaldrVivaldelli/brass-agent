@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { Runtime } from "../../../core/runtime/runtime";
+import { Runtime } from "brass-runtime";
 import { makeConfiguredPermissions } from "../../tools/permissions";
 import { autoApproveApprovals } from "../../tools/approvals";
 import { makeVsCodeAgentHost, type VsCodeAgentHostApi } from "../vscodeAgentHost";

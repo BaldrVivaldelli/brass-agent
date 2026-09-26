@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Runtime } from "../../core/runtime/runtime";
+import { Runtime } from "brass-runtime";
 import {
     autoApproveApprovals,
     goalForAgentPreset,

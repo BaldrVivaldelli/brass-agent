@@ -1,4 +1,4 @@
-import { async, asyncFlatMap, asyncSucceed, type Async } from "../../core/types/asyncEffect";
+import { async, asyncFlatMap, asyncSucceed, type Async } from "brass-runtime";
 import type { AgentAction, AgentEnv, AgentError, AgentEvent, AgentPhase, AgentState, Observation } from "./types";
 
 export const nowMillis = (): Async<unknown, never, number> =>

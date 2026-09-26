@@ -3,7 +3,7 @@ import { decideNextAction } from "../../decide";
 import { filterByIntensity, emptyHistory } from "../index";
 import type { ValidationHistory } from "../types";
 import type { AgentAction, AgentState, Observation } from "../../types";
-import type { Async } from "../../../../core/types/asyncEffect";
+import type { Async } from "brass-runtime";
 import { PROJECT_PROFILE_PROBES } from "../../projectProfile";
 
 /**

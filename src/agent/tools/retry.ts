@@ -1,4 +1,4 @@
-import { asyncFail, asyncFold, asyncSucceed, type Async } from "../../core/types/asyncEffect";
+import { asyncFail, asyncFold, asyncSucceed, type Async } from "brass-runtime";
 
 export const retry = <R, E, A>(
     make: () => Async<R, E, A>,

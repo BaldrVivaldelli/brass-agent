@@ -1,5 +1,5 @@
-import { asyncFail, asyncFlatMap, asyncSucceed } from "../../core/types/asyncEffect";
-import { fromPromiseAbortable } from "../../core/runtime/runtime";
+import { asyncFail, asyncFlatMap, asyncSucceed } from "brass-runtime";
+import { fromPromiseAbortable } from "brass-runtime";
 import type { AgentError, FileSystem, SearchMatch, Shell } from "../core/types";
 
 type DynamicImport = (specifier: string) => Promise<any>;

@@ -1,6 +1,6 @@
-import { async, asyncFail, asyncFlatMap, type Async } from "../../core/types/asyncEffect";
-import { race } from "../../core/stream/structuredConcurrency";
-import type { Scope } from "../../core/runtime/scope";
+import { async, asyncFail, asyncFlatMap, type Async } from "brass-runtime";
+import { race } from "brass-runtime";
+import type { Scope } from "brass-runtime";
 import type { AgentError } from "../core/types";
 
 export const sleep = (ms: number): Async<unknown, never, void> =>

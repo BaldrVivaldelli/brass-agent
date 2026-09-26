@@ -1,4 +1,4 @@
-import type { RuntimeBoundaryDiagnosticsOptions } from "../../core/runtime/boundaryDiagnostics";
+import type { RuntimeBoundaryDiagnosticsOptions } from "brass-runtime";
 import type { AgentHost } from "../core/types";
 import { NativeServiceClient } from "../native/client";
 import type { NativeServiceEvent, NativeServiceTransportFactory } from "../native/protocol";

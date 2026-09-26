@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { Runtime } from "../../../../core/runtime/runtime";
+import { Runtime } from "brass-runtime";
 import { runAgent } from "../../runAgent";
 import type {
     AgentEnv,
@@ -7,7 +7,7 @@ import type {
     AgentGoal,
     LLMResponse,
 } from "../../types";
-import { asyncSucceed } from "../../../../core/types/asyncEffect";
+import { asyncSucceed } from "brass-runtime";
 
 /**
  * Integration tests for the budget-aware runner.

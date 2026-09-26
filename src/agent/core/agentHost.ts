@@ -8,7 +8,7 @@ import type {
     PermissionDecision,
     PermissionService,
 } from "./types";
-import { asyncSucceed } from "../../core/types/asyncEffect";
+import { asyncSucceed } from "brass-runtime";
 
 export const AGENT_HOST_CONTRACT_VERSION = 1 as const;
 

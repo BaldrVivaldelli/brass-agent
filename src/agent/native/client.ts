@@ -1,7 +1,7 @@
 import {
   emitRuntimeBoundaryEvent,
   type RuntimeBoundaryResult,
-} from "../../core/runtime/boundaryDiagnostics";
+} from "brass-runtime";
 import {
   isRuntimeBoundaryEvent,
   NATIVE_SERVICE_MAX_MESSAGE_BYTES,

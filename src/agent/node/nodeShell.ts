@@ -1,5 +1,5 @@
-import { async } from "../../core/types/asyncEffect";
-import { Cause, Exit } from "../../core/types/effect";
+import { async } from "brass-runtime";
+import { Cause, Exit } from "brass-runtime";
 import type { AgentError, ExecResult, Shell } from "../core/types";
 
 type DynamicImport = (specifier: string) => Promise<any>;

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { decideNextAction } from "../../decide";
 import type { AgentAction, AgentError, AgentState, Observation } from "../../types";
-import type { Async } from "../../../../core/types/asyncEffect";
+import type { Async } from "brass-runtime";
 
 /**
  * Integration tests for decide.ts recovery flow.

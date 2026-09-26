@@ -1,4 +1,4 @@
-import { asyncSucceed, type Async } from "../../core/types/asyncEffect";
+import { asyncSucceed, type Async } from "brass-runtime";
 import {
     describeContextDiscovery,
     nextContextDiscoveryAction,

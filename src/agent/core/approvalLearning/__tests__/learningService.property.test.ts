@@ -9,7 +9,7 @@ import { makeInMemoryHistoryStore, addObservation } from "../store";
 import { DEFAULT_LEARNING_CONFIG, emptyApprovalHistory } from "../types";
 import type { ApprovalObservation, LearningConfig, ApprovalHistory } from "../types";
 import type { ApprovalRequest, ApprovalResponse, ApprovalService, AgentEnv, AgentError } from "../../types";
-import type { Async } from "../../../../core/types/asyncEffect";
+import type { Async } from "brass-runtime";
 import { approveApprovalRequest, makeApprovalCapability } from "../../approvalCapability";
 
 // --- Generators ---

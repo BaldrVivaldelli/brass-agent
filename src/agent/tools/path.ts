@@ -1,4 +1,4 @@
-import { asyncFail, asyncSucceed, type Async } from "../../core/types/asyncEffect";
+import { asyncFail, asyncSucceed, type Async } from "brass-runtime";
 import type { AgentError } from "../core/types";
 
 export const isAbsoluteLike = (path: string): boolean =>

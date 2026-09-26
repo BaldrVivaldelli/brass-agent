@@ -14,6 +14,8 @@ name = "brass-native-service"
 path = "src/main.rs"
 
 [dependencies]
-brass-engine-core = { path = "../brass-engine-core" }
+# brass-engine-core stays in the brass-runtime repository: it is shared with
+# the WASM engine. Pin a tag once brass-runtime publishes one.
+brass-engine-core = { git = "https://github.com/BaldrVivaldelli/brass-runtime.git", branch = "main" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"

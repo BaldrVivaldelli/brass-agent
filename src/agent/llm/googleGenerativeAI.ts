@@ -1,4 +1,4 @@
-import { fromPromiseAbortable } from "../../core/runtime/runtime";
+import { fromPromiseAbortable } from "brass-runtime";
 import type { AgentError, LLM, LLMResponse } from "../core/types";
 
 export type GoogleGenerativeAIConfig = {

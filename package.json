@@ -1,0 +1,75 @@
+{
+  "name": "@brass/agent",
+  "version": "0.1.0-alpha.0",
+  "description": "Workspace agent: inspects projects, asks an LLM for patches, and applies or rolls them back under policy",
+  "license": "MIT",
+  "author": "Augusto Vivaldelli",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "brass-agent": "dist/cli.cjs"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:types": "tsc -p tsconfig.json --noEmit",
+    "dev": "tsx src/agent/cli/main.ts",
+    "doctor": "tsx src/agent/cli/main.ts --doctor",
+    "init": "tsx src/agent/cli/main.ts --init",
+    "smoke": "node scripts/agent-local-smoke.mjs",
+    "native:build": "cargo build --release -p brass-native-service",
+    "native:test": "cargo test -p brass-native-service",
+    "native:package": "node scripts/package-native-service.mjs",
+    "vscode:package": "node scripts/install-vscode-extension.mjs --no-code-install --no-settings",
+    "vscode:install": "node scripts/install-vscode-extension.mjs",
+    "vscode:clean": "node scripts/clean-vscode-extension.mjs --yes",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "brass-runtime": ">=1.18.3 <2 || >=2.0.0-beta.0 <3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "brass-runtime": "^1.22.0",
+    "esbuild": "0.28.2",
+    "fast-check": "^4.7.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.5"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BaldrVivaldelli/brass-agent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BaldrVivaldelli/brass-agent/issues"
+  },
+  "overrides": {
+    "esbuild": "0.28.2",
+    "vite": "8.1.5"
+  }
+}

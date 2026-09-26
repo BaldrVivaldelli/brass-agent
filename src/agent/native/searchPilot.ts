@@ -1,7 +1,7 @@
 import {
   emitRuntimeBoundaryEvent,
   type RuntimeBoundaryDiagnosticsOptions,
-} from "../../core/runtime/boundaryDiagnostics";
+} from "brass-runtime";
 import { NativeServiceClient, type NativeRequestOptions } from "./client";
 import {
   NativeServiceError,

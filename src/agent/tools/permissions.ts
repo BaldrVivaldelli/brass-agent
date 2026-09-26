@@ -1,4 +1,4 @@
-import { asyncSucceed } from "../../core/types/asyncEffect";
+import { asyncSucceed } from "brass-runtime";
 import type { AgentAction, AgentState, ApprovalDefaultAnswer, ApprovalRisk, PermissionDecision, PermissionService } from "../core/types";
 import type { AgentPermissionConfig, PatchApplyPermissionConfig, ShellAskRule, ShellPermissionConfig } from "../core/config";
 

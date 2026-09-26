@@ -1,7 +1,7 @@
-import { asyncFail, asyncFold, asyncFlatMap, asyncSucceed, asyncSync, asyncInterruptible, type Async } from "../../core/types/asyncEffect";
-import type { Runtime } from "../../core/runtime/runtime";
-import type { Scope } from "../../core/runtime/scope";
-import { withScopeAsync } from "../../core/runtime/scope";
+import { asyncFail, asyncFold, asyncFlatMap, asyncSucceed, asyncSync, asyncInterruptible, type Async } from "brass-runtime";
+import type { Runtime } from "brass-runtime";
+import type { Scope } from "brass-runtime";
+import { withScopeAsync } from "brass-runtime";
 import type { AgentAction, AgentEnv, AgentError, AgentGoal, AgentState, LLMResponse, Observation } from "./types";
 import { decideNextAction } from "./decide";
 import { initialAgentState } from "./state";

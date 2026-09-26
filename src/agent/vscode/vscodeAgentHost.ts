@@ -1,5 +1,5 @@
-import { asyncInterruptible, type Async } from "../../core/types/asyncEffect";
-import { Cause, Exit } from "../../core/types/effect";
+import { asyncInterruptible, type Async } from "brass-runtime";
+import { Cause, Exit } from "brass-runtime";
 import type {
     AgentDiagnostics,
     AgentError,

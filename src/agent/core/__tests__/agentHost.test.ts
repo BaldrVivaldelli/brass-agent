@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { asyncSucceed } from "../../../core/types/asyncEffect";
-import { Runtime } from "../../../core/runtime/runtime";
+import { asyncSucceed } from "brass-runtime";
+import { Runtime } from "brass-runtime";
 import {
     AgentHostConfigError,
     makeAgentLifecycle,

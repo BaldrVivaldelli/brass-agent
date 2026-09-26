@@ -1,4 +1,4 @@
-import { asyncSucceed } from "../../core/types/asyncEffect";
+import { asyncSucceed } from "brass-runtime";
 import type { LLM, LLMRequest } from "../core/types";
 
 export type FakeLLMOptions = {

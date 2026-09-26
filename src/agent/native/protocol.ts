@@ -1,7 +1,7 @@
 import type {
   RuntimeBoundaryDiagnosticsOptions,
   RuntimeBoundaryEvent,
-} from "../../core/runtime/boundaryDiagnostics";
+} from "brass-runtime";
 
 export const NATIVE_SERVICE_PROTOCOL_VERSION = 1 as const;
 export const NATIVE_SERVICE_MAX_MESSAGE_BYTES = 16 * 1024 * 1024;

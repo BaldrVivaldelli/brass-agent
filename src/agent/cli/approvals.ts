@@ -1,5 +1,5 @@
-import { async } from "../../core/types/asyncEffect";
-import { Cause, Exit } from "../../core/types/effect";
+import { async } from "brass-runtime";
+import { Cause, Exit } from "brass-runtime";
 import { summarizeAgentAction } from "../core/events";
 import type { AgentError, ApprovalRequest, ApprovalResponse, ApprovalService } from "../core/types";
 import { approveApprovalRequest } from "../core/approvalCapability";

@@ -2,9 +2,9 @@ import { describe, it, expect } from "vitest";
 import * as fc from "fast-check";
 import { actionToEffect } from "../actionToEffect";
 import type { AgentAction, AgentEnv, AgentError, AgentState, Observation } from "../../core/types";
-import { registerEffectDirect } from "../../../core/runtime/directEffectRunner";
-import type { Exit } from "../../../core/types/effect";
-import { asyncSucceed } from "../../../core/types/asyncEffect";
+import { runExit } from "brass-runtime";
+import type { Exit } from "brass-runtime";
+import { asyncSucceed } from "brass-runtime";
 
 /**
  * Property-based tests for LLM guard behavior in actionToEffect.
@@ -18,16 +18,18 @@ import { asyncSucceed } from "../../../core/types/asyncEffect";
 
 // --- Helpers ---
 
-/** Run an Async effect synchronously and return the Exit. */
+/**
+ * Run an Async effect and return its Exit.
+ *
+ * This goes through the public runtime entrypoint rather than a direct
+ * synchronous register, so the effect is interpreted exactly as it would be in
+ * production: on the scheduler, through the fiber machinery.
+ */
 function runEffect<E, A>(
     effect: ReturnType<typeof actionToEffect>,
     env: AgentEnv,
-): Exit<E, A> {
-    let result: Exit<E, A> | undefined;
-    registerEffectDirect(effect as any, env, (exit) => {
-        result = exit as Exit<E, A>;
-    });
-    return result!;
+): Promise<Exit<E, A>> {
+    return runExit(effect as any, env) as Promise<Exit<E, A>>;
 }
 
 /** Create a minimal AgentState for testing. */
@@ -149,14 +151,14 @@ describe("Property 8: Tool-only actions succeed without LLM", () => {
      *
      * **Validates: Requirements 8.2**
      */
-    it("tool-only actions produce Observation without LLMError when llm is undefined", () => {
+    it("tool-only actions produce Observation without LLMError when llm is undefined", async () => {
         const env = makeMockEnvWithoutLLM();
         const state = makeState();
 
-        fc.assert(
-            fc.property(arbToolOnlyAction, (action) => {
+        await fc.assert(
+            fc.asyncProperty(arbToolOnlyAction, async (action) => {
                 const effect = actionToEffect(action, state);
-                const exit = runEffect<AgentError, Observation>(effect, env);
+                const exit = await runEffect<AgentError, Observation>(effect, env);
 
                 if (exit._tag === "Success") {
                     // Success: produced an Observation — this is the expected path
@@ -180,14 +182,14 @@ describe("Property 8: Tool-only actions succeed without LLM", () => {
      *
      * **Validates: Requirements 8.2**
      */
-    it("fs.readFile succeeds without LLM and produces fs.fileRead observation", () => {
+    it("fs.readFile succeeds without LLM and produces fs.fileRead observation", async () => {
         const env = makeMockEnvWithoutLLM();
         const state = makeState();
 
-        fc.assert(
-            fc.property(arbRelativePath, (path) => {
+        await fc.assert(
+            fc.asyncProperty(arbRelativePath, async (path) => {
                 const action: AgentAction = { type: "fs.readFile", path };
-                const exit = runEffect<AgentError, Observation>(actionToEffect(action, state), env);
+                const exit = await runEffect<AgentError, Observation>(actionToEffect(action, state), env);
 
                 expect(exit._tag).toBe("Success");
                 if (exit._tag === "Success") {
@@ -198,14 +200,14 @@ describe("Property 8: Tool-only actions succeed without LLM", () => {
         );
     });
 
-    it("fs.exists succeeds without LLM and produces fs.exists observation", () => {
+    it("fs.exists succeeds without LLM and produces fs.exists observation", async () => {
         const env = makeMockEnvWithoutLLM();
         const state = makeState();
 
-        fc.assert(
-            fc.property(arbRelativePath, (path) => {
+        await fc.assert(
+            fc.asyncProperty(arbRelativePath, async (path) => {
                 const action: AgentAction = { type: "fs.exists", path };
-                const exit = runEffect<AgentError, Observation>(actionToEffect(action, state), env);
+                const exit = await runEffect<AgentError, Observation>(actionToEffect(action, state), env);
 
                 expect(exit._tag).toBe("Success");
                 if (exit._tag === "Success") {
@@ -216,14 +218,14 @@ describe("Property 8: Tool-only actions succeed without LLM", () => {
         );
     });
 
-    it("fs.searchText succeeds without LLM and produces fs.searchResult observation", () => {
+    it("fs.searchText succeeds without LLM and produces fs.searchResult observation", async () => {
         const env = makeMockEnvWithoutLLM();
         const state = makeState();
 
-        fc.assert(
-            fc.property(fc.string({ minLength: 1, maxLength: 20 }), (query) => {
+        await fc.assert(
+            fc.asyncProperty(fc.string({ minLength: 1, maxLength: 20 }), async (query) => {
                 const action: AgentAction = { type: "fs.searchText", query };
-                const exit = runEffect<AgentError, Observation>(actionToEffect(action, state), env);
+                const exit = await runEffect<AgentError, Observation>(actionToEffect(action, state), env);
 
                 expect(exit._tag).toBe("Success");
                 if (exit._tag === "Success") {
@@ -234,16 +236,16 @@ describe("Property 8: Tool-only actions succeed without LLM", () => {
         );
     });
 
-    it("shell.exec succeeds without LLM and produces shell.result observation", () => {
+    it("shell.exec succeeds without LLM and produces shell.result observation", async () => {
         const env = makeMockEnvWithoutLLM();
         const state = makeState();
 
-        fc.assert(
-            fc.property(
+        await fc.assert(
+            fc.asyncProperty(
                 fc.array(fc.string({ minLength: 1, maxLength: 10 }), { minLength: 1, maxLength: 3 }),
-                (command) => {
+                async (command) => {
                     const action: AgentAction = { type: "shell.exec", command };
-                    const exit = runEffect<AgentError, Observation>(actionToEffect(action, state), env);
+                    const exit = await runEffect<AgentError, Observation>(actionToEffect(action, state), env);
 
                     expect(exit._tag).toBe("Success");
                     if (exit._tag === "Success") {
@@ -255,14 +257,14 @@ describe("Property 8: Tool-only actions succeed without LLM", () => {
         );
     });
 
-    it("patch.apply succeeds without LLM and produces patch.applied observation", () => {
+    it("patch.apply succeeds without LLM and produces patch.applied observation", async () => {
         const env = makeMockEnvWithoutLLM();
         const state = makeState();
 
-        fc.assert(
-            fc.property(fc.string({ minLength: 1, maxLength: 50 }), (patch) => {
+        await fc.assert(
+            fc.asyncProperty(fc.string({ minLength: 1, maxLength: 50 }), async (patch) => {
                 const action: AgentAction = { type: "patch.apply", patch };
-                const exit = runEffect<AgentError, Observation>(actionToEffect(action, state), env);
+                const exit = await runEffect<AgentError, Observation>(actionToEffect(action, state), env);
 
                 expect(exit._tag).toBe("Success");
                 if (exit._tag === "Success") {
@@ -273,14 +275,14 @@ describe("Property 8: Tool-only actions succeed without LLM", () => {
         );
     });
 
-    it("patch.rollback succeeds without LLM and produces patch.rolledBack observation", () => {
+    it("patch.rollback succeeds without LLM and produces patch.rolledBack observation", async () => {
         const env = makeMockEnvWithoutLLM();
         const state = makeState();
 
-        fc.assert(
-            fc.property(fc.string({ minLength: 1, maxLength: 50 }), (patch) => {
+        await fc.assert(
+            fc.asyncProperty(fc.string({ minLength: 1, maxLength: 50 }), async (patch) => {
                 const action: AgentAction = { type: "patch.rollback", patch };
-                const exit = runEffect<AgentError, Observation>(actionToEffect(action, state), env);
+                const exit = await runEffect<AgentError, Observation>(actionToEffect(action, state), env);
 
                 expect(exit._tag).toBe("Success");
                 if (exit._tag === "Success") {
@@ -291,14 +293,14 @@ describe("Property 8: Tool-only actions succeed without LLM", () => {
         );
     });
 
-    it("patch.propose succeeds without LLM and produces patch.proposed observation", () => {
+    it("patch.propose succeeds without LLM and produces patch.proposed observation", async () => {
         const env = makeMockEnvWithoutLLM();
         const state = makeState();
 
-        fc.assert(
-            fc.property(fc.string({ minLength: 1, maxLength: 50 }), (patch) => {
+        await fc.assert(
+            fc.asyncProperty(fc.string({ minLength: 1, maxLength: 50 }), async (patch) => {
                 const action: AgentAction = { type: "patch.propose", patch };
-                const exit = runEffect<AgentError, Observation>(actionToEffect(action, state), env);
+                const exit = await runEffect<AgentError, Observation>(actionToEffect(action, state), env);
 
                 expect(exit._tag).toBe("Success");
                 if (exit._tag === "Success") {
@@ -323,14 +325,14 @@ describe("Property 9: LLM guard produces correct error when unavailable", () => 
      *
      * **Validates: Requirements 8.3, 8.4, 10.1**
      */
-    it("llm.complete produces LLMError with llm_unavailable when llm is undefined", () => {
+    it("llm.complete produces LLMError with llm_unavailable when llm is undefined", async () => {
         const env = makeMockEnvWithoutLLM();
         const state = makeState();
 
-        fc.assert(
-            fc.property(arbLlmAction, (action) => {
+        await fc.assert(
+            fc.asyncProperty(arbLlmAction, async (action) => {
                 const effect = actionToEffect(action, state);
-                const exit = runEffect<AgentError, Observation>(effect, env);
+                const exit = await runEffect<AgentError, Observation>(effect, env);
 
                 // Must be a failure
                 expect(exit._tag).toBe("Failure");
@@ -354,14 +356,14 @@ describe("Property 9: LLM guard produces correct error when unavailable", () => 
      *
      * **Validates: Requirements 8.4**
      */
-    it("llm.complete never produces a successful Observation when llm is undefined", () => {
+    it("llm.complete never produces a successful Observation when llm is undefined", async () => {
         const env = makeMockEnvWithoutLLM();
         const state = makeState();
 
-        fc.assert(
-            fc.property(arbLlmAction, (action) => {
+        await fc.assert(
+            fc.asyncProperty(arbLlmAction, async (action) => {
                 const effect = actionToEffect(action, state);
-                const exit = runEffect<AgentError, Observation>(effect, env);
+                const exit = await runEffect<AgentError, Observation>(effect, env);
 
                 // Must NOT be a success (no fabricated content)
                 expect(exit._tag).not.toBe("Success");
@@ -376,19 +378,19 @@ describe("Property 9: LLM guard produces correct error when unavailable", () => 
      *
      * **Validates: Requirements 8.3, 10.1**
      */
-    it("error cause contains 'llm_unavailable' for all LLM purposes", () => {
+    it("error cause contains 'llm_unavailable' for all LLM purposes", async () => {
         const env = makeMockEnvWithoutLLM();
         const state = makeState();
         const purposes = ["plan", "patch", "explain"] as const;
 
-        fc.assert(
-            fc.property(
+        await fc.assert(
+            fc.asyncProperty(
                 fc.constantFrom(...purposes),
                 fc.string({ minLength: 1, maxLength: 100 }),
-                (purpose, prompt) => {
+                async (purpose, prompt) => {
                     const action: AgentAction = { type: "llm.complete", purpose, prompt };
                     const effect = actionToEffect(action, state);
-                    const exit = runEffect<AgentError, Observation>(effect, env);
+                    const exit = await runEffect<AgentError, Observation>(effect, env);
 
                     expect(exit._tag).toBe("Failure");
                     if (exit._tag === "Failure") {
