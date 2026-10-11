@@ -4,3 +4,7 @@ coverage/
 target/
 *.vsix
 .DS_Store
+
+# brass-engine-core is a git dependency on brass-runtime main until a tag
+# exists; keep the lockfile out so CI resolves the branch tip every run.
+Cargo.lock
