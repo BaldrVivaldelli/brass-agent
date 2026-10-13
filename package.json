@@ -46,7 +46,7 @@
     "brass-runtime": ">=1.18.3 <2 || >=2.0.0-beta.0 <3"
   },
   "devDependencies": {
-    "@types/node": "^22.15.0",
+    "@types/node": "^22.20.5",
     "brass-runtime": "^1.22.0",
     "esbuild": "0.28.2",
     "fast-check": "^4.7.0",
